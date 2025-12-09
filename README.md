@@ -51,7 +51,7 @@ Models evaluated:
 | Support Vector Machine |
 | Naive Bayes |
 | XGBoost |
-| **Random Forest (Selected Model)** ✔ |
+| **Random Forest (Selected Model)**  |✔
 
 **Best Model:** Random Forest  
 **Performance Metrics:**
