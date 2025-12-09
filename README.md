@@ -65,4 +65,8 @@ Models evaluated:
 
 ---
 
-## 🧾 Pre
+## 🧾 Prediction Example
+
+python
+print(predict_url("https://secure-paypal-login-update-verification.com"))
+# Output: ⚠️ Phishing Website
