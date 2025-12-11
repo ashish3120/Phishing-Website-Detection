@@ -2,14 +2,14 @@ from urllib.parse import urlparse
 import re
 
 PHISH_KEYWORDS = [
-    "login","logon","signin","verify","verification","update",
-    "secure","security","account","password","bank","payment",
-    "confirm","webscr","billing","credential"
+    "login", "logon", "signin", "verify", "verification", "update",
+    "secure", "security", "account", "password", "bank", "payment",
+    "confirm", "webscr", "billing", "credential"
 ]
 
 BRAND_KEYWORDS = [
-    "paypal","apple","google","amazon","microsoft","netflix","bank",
-    "hdfc","sbi","icici","facebook","instagram"
+    "paypal", "apple", "google", "amazon", "microsoft", "netflix",
+    "hdfc", "sbi", "icici", "facebook", "instagram"
 ]
 
 def extract_features(url: str) -> dict:
@@ -31,7 +31,7 @@ def extract_features(url: str) -> dict:
     digits = sum(c.isdigit() for c in url)
 
     keyword_count = sum(full.count(k) for k in PHISH_KEYWORDS)
-    keyword_flag = int(any(k in full for k in PHISH_KEYWORDS))
+    suspicious_flag = int(any(k in full for k in PHISH_KEYWORDS))
     brand_flag = int(any(b in full for b in BRAND_KEYWORDS))
 
     return {
@@ -52,6 +52,6 @@ def extract_features(url: str) -> dict:
         "domain_name_length": len(domain),
         "percentage_numeric_chars": (digits/url_len*100) if url_len else 0,
         "keyword_count": keyword_count,
-        "has_suspicious_keyword": keyword_flag,
+        "has_suspicious_keyword": suspicious_flag,
         "has_brand_keyword": brand_flag
     }
