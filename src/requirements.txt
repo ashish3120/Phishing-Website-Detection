@@ -23,4 +23,5 @@ scikit-learn
 joblib
 tqdm
 gunicorn
+fastapi
 
