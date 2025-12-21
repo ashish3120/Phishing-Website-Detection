@@ -1,57 +1,67 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from fastapi import FastAPI
+from pydantic import BaseModel
 import joblib
 import pandas as pd
-from extract_features import extract_features
 
-app = Flask(__name__)
-CORS(app)
+# Import your feature extraction logic
+from .extract_features import extract_features
 
-# Load model + column order
-model = joblib.load("best_model.pkl")
-training_columns = joblib.load("training_columns.pkl")
+# ---------------------------
+# Initialize FastAPI app
+# ---------------------------
+app = FastAPI(title="Phishing Detection API")
 
-@app.route("/")
+# ---------------------------
+# Load model and metadata
+# (loaded ONCE at startup)
+# ---------------------------
+model = joblib.load("src/best_model.joblib")
+training_columns = joblib.load("src/training_columns.joblib")
+
+# ---------------------------
+# Request schema
+# ---------------------------
+class URLRequest(BaseModel):
+    url: str
+
+# ---------------------------
+# Health check route
+# ---------------------------
+@app.get("/")
 def index():
-    return jsonify({"message": "Phishing Detection API is running!"})
+    return {"message": "Phishing Detection API is running!"}
 
-@app.route("/predict", methods=["POST"])
-def predict():
+# ---------------------------
+# Prediction route
+# ---------------------------
+@app.post("/predict")
+def predict(request: URLRequest):
     try:
-        data = request.get_json()
+        url = request.url
 
-        if not data or "url" not in data:
-            return jsonify({"error": "Provide JSON: {\"url\": \"https://example.com\"}"}), 400
+        # Extract features from URL
+        feats = extract_features(url)   
 
-        url = data["url"]
-
-        # Extract features
-        feats = extract_features(url)
-
-        # Align with training columns
+        # Align features with training columns
         row = {col: feats.get(col, 0) for col in training_columns}
         df = pd.DataFrame([row])
 
+        # Make prediction
         pred = model.predict(df)[0]
+
         label = "phishing" if pred == 1 else "legitimate"
 
-        prob = None
-        if hasattr(model, "predict_proba"):
-            prob = float(model.predict_proba(df)[0].max())
 
-        return jsonify({
+        # Prediction probability (if supported)
+        probability = None
+        if hasattr(model, "predict_proba"):
+            probability = float(model.predict_proba(df)[0].max())
+
+        return {
             "url": url,
             "prediction": label,
-            "probability": prob
-        })
+            "probability": probability
+        }
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-import os
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
+        return {"error": str(e)}
