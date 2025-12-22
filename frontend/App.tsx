@@ -6,6 +6,10 @@ import { analyzeUrlWithAI } from './services/gemini';
 import { PredictionStatus, PredictionResult, AIAnalysis } from './types';
 
 const App: React.FC = () => {
+  console.log(
+    'VITE_API_BASE =',
+    import.meta.env.VITE_API_BASE
+  );
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState<PredictionStatus>(PredictionStatus.IDLE);
   const [result, setResult] = useState<PredictionResult | null>(null);
