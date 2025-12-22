@@ -1,0 +1,5 @@
+{
+  "name": "PhishGuard AI",
+  "description": "A high-performance phishing website detection tool featuring a liquid UI, real-time backend verification, and AI-powered threat analysis.",
+  "requestFramePermissions": []
+}

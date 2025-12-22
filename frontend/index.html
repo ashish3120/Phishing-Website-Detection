@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhishGuard AI - Phishing Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body,
+    html,
+    #app {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      touch-action: none;
+      background: #000;
+      color: #fff;
+    }
+
+    #app {
+      height: 100%;
+      font-family: "Montserrat", sans-serif;
+      position: relative;
+    }
+
+    #canvas {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .framer-link {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      text-decoration: none;
+      text-shadow: 1px 1px 2px black;
+      z-index: 20;
+      font-size: 12px;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .framer-link:hover {
+      opacity: 1;
+    }
+
+    /* Ensure the React content is layered above the canvas */
+    #ui-layer {
+      position: relative;
+      z-index: 10;
+      height: 100%;
+      overflow-y: auto;
+    }
+  </style>
+  <script type="importmap">
+  {
+    "imports": {
+      "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+      "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+      "react/": "https://esm.sh/react@^19.2.3/",
+      "react": "https://esm.sh/react@^19.2.3"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="app">
+    <canvas id="canvas"></canvas>
+    <div id="ui-layer"></div>
+  </div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
