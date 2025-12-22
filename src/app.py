@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import pandas as pd
@@ -10,6 +11,21 @@ from .extract_features import extract_features
 # Initialize FastAPI app
 # ---------------------------
 app = FastAPI(title="Phishing Detection API")
+
+# ---------------------------
+# CORS Middleware (REQUIRED)
+# ---------------------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        # add your frontend domain here after deployment
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------------------------
 # Load model and metadata
@@ -37,10 +53,10 @@ def index():
 @app.post("/predict")
 def predict(request: URLRequest):
     try:
-        url = request.url
+        url = request.url.strip()
 
         # Extract features from URL
-        feats = extract_features(url)   
+        feats = extract_features(url)
 
         # Align features with training columns
         row = {col: feats.get(col, 0) for col in training_columns}
@@ -48,9 +64,7 @@ def predict(request: URLRequest):
 
         # Make prediction
         pred = model.predict(df)[0]
-
         label = "phishing" if pred == 1 else "legitimate"
-
 
         # Prediction probability (if supported)
         probability = None
@@ -60,7 +74,7 @@ def predict(request: URLRequest):
         return {
             "url": url,
             "prediction": label,
-            "probability": probability
+            "confidence": probability
         }
 
     except Exception as e:
