@@ -18,12 +18,10 @@ app = FastAPI(title="Phishing Detection API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://phishing-website-detection-f9lp.vercel.app",
         "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://phishing-website-detection-ashy.vercel.app/"
-        # add your frontend domain here after deployment
     ],
-    allow_credentials=True,
+    allow_credentials=False,  # 🔑 IMPORTANT CHANGE
     allow_methods=["*"],
     allow_headers=["*"],
 )
