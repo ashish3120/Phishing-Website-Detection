@@ -16,30 +16,39 @@ const App: React.FC = () => {
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCheck = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!url.trim()) return;
+ const handleCheck = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!url.trim()) return;
 
-    setStatus(PredictionStatus.LOADING);
-    setError(null);
-    setResult(null);
-    setAiAnalysis(null);
+  setStatus(PredictionStatus.LOADING);
+  setError(null);
+  setResult(null);
+  setAiAnalysis(null);
 
-    try {
-      // 1. Backend Detection
-      const prediction = await checkPhishing(url);
-      setResult(prediction);
+  try {
+    // 1️⃣ ML prediction (FAST)
+    const prediction = await checkPhishing(url);
 
-      // 2. AI Threat Analysis
-      const analysis = await analyzeUrlWithAI(url, prediction.isPhishing);
-      setAiAnalysis(analysis);
+    // Show ML result immediately
+    setResult(prediction);
+    setStatus(PredictionStatus.SUCCESS);
 
-      setStatus(PredictionStatus.SUCCESS);
-    } catch (err: any) {
-      setError(err.message || 'Detection service unavailable. Please try again later.');
-      setStatus(PredictionStatus.ERROR);
-    }
-  };
+    // 2️⃣ Gemini analysis (NON-BLOCKING)
+    analyzeUrlWithAI(url, prediction.isPhishing)
+      .then((analysis) => {
+        setAiAnalysis(analysis);
+      })
+      .catch((err) => {
+        console.warn("Gemini analysis failed:", err);
+        // Do not break UX if Gemini fails
+      });
+
+  } catch (err: any) {
+    setError(err.message || 'Detection service unavailable. Please try again later.');
+    setStatus(PredictionStatus.ERROR);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 pb-24">
