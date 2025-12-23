@@ -16,9 +16,12 @@ const App: React.FC = () => {
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
 
- const handleCheck = async (e: React.FormEvent) => {
+const handleCheck = async (e: React.FormEvent) => {
   e.preventDefault();
   if (!url.trim()) return;
+
+  // 🔒 Prevent double submission
+  if (status === PredictionStatus.LOADING) return;
 
   setStatus(PredictionStatus.LOADING);
   setError(null);
@@ -26,28 +29,26 @@ const App: React.FC = () => {
   setAiAnalysis(null);
 
   try {
-    // 1️⃣ ML prediction (FAST)
+    // 1️⃣ ML prediction
     const prediction = await checkPhishing(url);
 
     // Show ML result immediately
     setResult(prediction);
     setStatus(PredictionStatus.SUCCESS);
 
-    // 2️⃣ Gemini analysis (NON-BLOCKING)
+    // 2️⃣ Gemini (fire-and-forget)
     analyzeUrlWithAI(url, prediction.isPhishing)
-      .then((analysis) => {
-        setAiAnalysis(analysis);
-      })
+      .then(setAiAnalysis)
       .catch((err) => {
-        console.warn("Gemini analysis failed:", err);
-        // Do not break UX if Gemini fails
+        console.warn("Gemini failed:", err);
       });
 
   } catch (err: any) {
-    setError(err.message || 'Detection service unavailable. Please try again later.');
+    setError(err.message || "Detection service unavailable.");
     setStatus(PredictionStatus.ERROR);
   }
 };
+
 
 
   return (
