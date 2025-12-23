@@ -100,14 +100,8 @@ app.add_middleware(
     allow_origins=[
         "https://phishing-website-detection-f9lp.vercel.app",
         "http://localhost:3000",
-<<<<<<< HEAD
-        "http://localhost:5173",
-    ],
-    allow_credentials=False,  # 🔑 IMPORTANT CHANGE
-=======
     ],
     allow_credentials=False,   # 🔑 MUST be False
->>>>>>> 3b533ba997b5aac79a6ff56a727d325ddc5172f4
     allow_methods=["*"],
     allow_headers=["*"],
 )
