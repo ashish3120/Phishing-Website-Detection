@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-const handleCheck = async (e: React.FormEvent) => {
+  const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) return;
 
