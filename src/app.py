@@ -102,7 +102,7 @@ app.add_middleware(
         "http://localhost:3000",
 
         # ✅ NEW Vercel domain
-        "https://phishing-website-detection-zeta.vercel.app",
+        "https://phishing-website-detection-rdconbamg.vercel.app",
     ],
     allow_credentials=False,
     allow_methods=["*"],
