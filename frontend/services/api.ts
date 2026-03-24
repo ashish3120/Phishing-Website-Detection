@@ -3,7 +3,7 @@ import { PredictionResult } from '../types';
 // 🔑 Hard fallback ensures Render is used even if env fails
 const BACKEND_URL =
   import.meta.env.VITE_API_BASE ||
-  'https://phishing-website-detection-backend.onrender.com';
+  'https://phishing-website-detection-1-xr90.onrender.com';
 
 export const checkPhishing = async (url: string): Promise<PredictionResult> => {
   const response = await fetch(`${BACKEND_URL}/predict`, {
