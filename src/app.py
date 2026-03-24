@@ -101,7 +101,9 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost:3000",
 
-        # ✅ NEW Vercel domain
+        # ✅ Correct Vercel domains
+        "https://phishing-website-detection-nine.vercel.app",
+        "https://phishing-website-detection-nine.vercel.app/",
         "https://phishing-website-detection-rdconbamg.vercel.app",
     ],
     allow_credentials=False,
