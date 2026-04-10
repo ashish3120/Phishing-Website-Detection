@@ -84,6 +84,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import joblib
 import pandas as pd
+import os
 
 from .extract_features import extract_features
 
@@ -120,11 +121,16 @@ app.add_middleware(
 def predict_options():
     return JSONResponse(status_code=200)
 
+
 # ---------------------------
 # Load model and metadata
 # ---------------------------
-model = joblib.load("src/best_model.joblib")
-training_columns = joblib.load("src/training_columns.joblib")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, "best_model.joblib")
+columns_path = os.path.join(BASE_DIR, "training_columns.joblib")
+
+model = joblib.load(model_path)
+training_columns = joblib.load(columns_path)
 
 # ---------------------------
 # Request schema
