@@ -10,6 +10,36 @@ This project aims to detect phishing websites using URL-based machine learning t
 
 ---
 
+## 🏗️ System Design & Architecture
+
+The project follows a modern decoupled architecture consisting of a client-side interface and a high-performance machine learning microservice.
+
+### High-Level Architecture
+```mermaid
+graph TD
+    User((User)) -->|Enters URL| Frontend[Frontend: React/Vite]
+    Frontend -->|POST Request /predict| Backend[Backend: FastAPI]
+    
+    subgraph "Prediction Engine (FastAPI Service)"
+    Backend -->|Raw URL| Extractor[Feature Extractor]
+    Extractor -->|Vector of 19 Features| Model[Random Forest Model]
+    Model -->|Binary Prediction| Response[JSON Result]
+    end
+    
+    Response -->|JSON Response| Frontend
+    Frontend -->|Display Results| User
+```
+
+### Request Flow
+1.  **Capture**: The user enters a URL in the React-based frontend.
+2.  **Dispatch**: The frontend sends a JSON payload containing the URL to the `/predict` endpoint of the FastAPI backend.
+3.  **Feature Extraction**: The backend uses a custom lexical analyzer (`extract_features.py`) to transform the raw string into 19 mathematical features (length, entropy, brand keywords, etc.).
+4.  **Inference**: The feature vector is passed to the pre-trained **Random Forest** model (serialized via `joblib`).
+5.  **Response**: The system returns the classification result (`legitimate` or `phishing`) along with a confidence probability.
+6.  **AI Insight (Optional)**: If configured with a Gemini API key, the frontend provides a secondary natural language explanation of the threat.
+
+---
+
 ## 🚀 Project Overview
 
 Phishing attacks are one of the most common cyber threats used to steal user credentials, financial information, and sensitive data.  
