@@ -4,6 +4,12 @@ This project aims to detect phishing websites using URL-based machine learning t
 
 ---
 
+## 🌐 Live Demo
+- **Frontend (UI)**: [https://phishing-website-detection-livid.vercel.app](https://phishing-website-detection-livid.vercel.app)
+- **Backend (API)**: [https://phishing-website-detection-lqcg.onrender.com](https://phishing-website-detection-lqcg.onrender.com)
+
+---
+
 ## 🚀 Project Overview
 
 Phishing attacks are one of the most common cyber threats used to steal user credentials, financial information, and sensitive data.  
@@ -16,45 +22,17 @@ The model is trained on a large dataset of **100K+ URLs**, extracted from real-w
 
 ---
 
-## 📂 Dataset
+## 🧠 Technical Stack
 
-- Total samples: **101,218**
-- Class distribution:
-  - **63,678 legitimate URLs**
-  - **37,540 phishing URLs**
-- Source: Public cybersecurity dataset (ScienceDirect) + OpenPhish feed
-
----
-
-## 🧠 Features Used
-
-The model extracts meaningful patterns from URLs, such as:
-
-| Feature Type | Examples |
-|-------------|----------|
-| URL Structure | Length, subdomains, hyphens, digits |
-| Domain Indicators | TLD length, popularity, HTTPS usage |
-| Entropy Features | Randomness in characters |
-| Suspicious Patterns | File extensions, query parameters, keywords |
-
-These features help differentiate real websites from fraudulent ones.
+- **Frontend**: React, Vite, TypeScript, TailwindCSS
+- **Backend**: FastAPI (Python), Uvicorn
+- **Machine Learning**: Scikit-Learn (Random Forest Classifier), Pandas, NumPy
+- **Deployment**: Vercel (Frontend), Render (Backend via Docker)
 
 ---
 
-## 🧪 Model Training
-
-Models evaluated:
-
-| Model | Result |
-|-------|--------|
-| Logistic Regression |
-| Support Vector Machine |
-| Naive Bayes |
-| XGBoost |
-| **Random Forest (Selected Model)**  |✔
-
+## 🧪 Model Performance
 **Best Model:** Random Forest  
-**Performance Metrics:**
 
 | Metric | Score |
 |--------|-------|
@@ -65,8 +43,35 @@ Models evaluated:
 
 ---
 
-## 🧾 Prediction Example
+## 💻 Local Setup
 
-python
-print(predict_url("https://secure-paypal-login-update-verification.com"))
-# Output: ⚠️ Phishing Website
+### Backend (Python)
+1. Navigate to the root directory.
+2. Create a virtual environment: `python -m venv venv`
+3. Activate it: `.\venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux).
+4. Install dependencies: `pip install -r requirements.txt`
+5. Run the server: `python -m uvicorn src.app:app --reload`
+
+### Frontend (React)
+1. Navigate to the `frontend` folder.
+2. Install dependencies: `npm install`
+3. Set your backend URL in `.env`: `VITE_API_BASE=http://localhost:8000`
+4. Run the development server: `npm run dev`
+
+---
+
+## 📂 Dataset Details
+
+- Total samples: **101,218**
+- Class distribution:
+  - **63,678 legitimate URLs**
+  - **37,540 phishing URLs**
+- Source: Public cybersecurity dataset (ScienceDirect) + OpenPhish feed
+
+---
+
+## 🤝 Contributing
+Feel free to fork this project and submit pull requests for features like:
+- Additional ML model comparisons.
+- Deep Learning (LSTM/CNN) implementations for URL analysis.
+- Real-time threat intelligent feeds integration.
