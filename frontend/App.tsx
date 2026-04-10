@@ -159,8 +159,14 @@ const App: React.FC = () => {
       const prediction = await checkPhishing(url);
       setResult(prediction);
 
-      const analysis = await analyzeUrlWithAI(url, prediction.isPhishing);
-      setAiAnalysis(analysis);
+      // 2. AI Threat Analysis (Optional)
+      try {
+        const analysis = await analyzeUrlWithAI(url, prediction.isPhishing);
+        setAiAnalysis(analysis);
+      } catch (aiErr) {
+        console.warn('AI Analysis failed:', aiErr);
+        // We don't set status to ERROR here because primary detection succeeded
+      }
 
       setStatus(PredictionStatus.SUCCESS);
     } catch (err: any) {
