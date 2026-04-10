@@ -103,10 +103,10 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:3000",
 
-        # ✅ Correct Vercel domains
         "https://phishing-website-detection-nine.vercel.app",
         "https://phishing-website-detection-nine.vercel.app/",
         "https://phishing-website-detection-rdconbamg.vercel.app",
+        "https://phishing-website-detection-livid.vercel.app",
     ],
     allow_credentials=False,
     allow_methods=["*"],
